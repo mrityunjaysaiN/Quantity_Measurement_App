@@ -1,5 +1,12 @@
 package com.apps.quantitymeasurement;
 
+/**
+ * A generic class for representing and comparing lengths in different units.
+ *
+ * <p>Conversion and comparison are normalized through a common base unit of
+ * inches, defined by the {@link LengthUnit} enum. This class provides both
+ * equality semantics and unit conversion APIs for supported length units.</p>
+ */
 public class Length {
 
     public enum LengthUnit {
@@ -44,8 +51,29 @@ public class Length {
         if (unit == null) {
             throw new IllegalArgumentException("Length unit must not be null.");
         }
+        if (!Double.isFinite(value)) {
+            throw new IllegalArgumentException("Length value must be a finite number.");
+        }
         this.value = value;
         this.unit = unit;
+    }
+
+    public static double convert(double value, LengthUnit sourceUnit, LengthUnit targetUnit) {
+        if (!Double.isFinite(value)) {
+            throw new IllegalArgumentException("Length value must be a finite number.");
+        }
+        if (sourceUnit == null || targetUnit == null) {
+            throw new IllegalArgumentException("Length units must not be null.");
+        }
+        double baseValue = value * sourceUnit.getConversionFactor();
+        return baseValue / targetUnit.getConversionFactor();
+    }
+
+    public Length convertTo(LengthUnit targetUnit) {
+        if (targetUnit == null) {
+            throw new IllegalArgumentException("Target unit must not be null.");
+        }
+        return new Length(convert(value, unit, targetUnit), targetUnit);
     }
 
     public double getValue() {
@@ -65,6 +93,11 @@ public class Length {
             throw new IllegalArgumentException("Compared length must not be null.");
         }
         return Math.abs(convertToBaseUnit() - thatLength.convertToBaseUnit()) < EPSILON;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%.6f %s", value, unit.name());
     }
 
     @Override

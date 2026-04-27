@@ -39,6 +39,28 @@ public class QuantityMeasurementApp {
         return parseLength(firstValue, firstUnit).equals(parseLength(secondValue, secondUnit));
     }
 
+    public static double demonstrateLengthConversion(double value,
+                                                      Length.LengthUnit fromUnit,
+                                                      Length.LengthUnit toUnit) {
+        double convertedValue = Length.convert(value, fromUnit, toUnit);
+        System.out.printf("Input: convert(%.6f, %s, %s) -> Output: %.6f%n",
+                value, fromUnit.name(), toUnit.name(), convertedValue);
+        return convertedValue;
+    }
+
+    public static Length demonstrateLengthConversion(Length length, Length.LengthUnit toUnit) {
+        Length convertedLength = length.convertTo(toUnit);
+        System.out.printf("Input: %s -> Output: %s%n", length, convertedLength);
+        return convertedLength;
+    }
+
+    public static boolean demonstrateLengthComparison(double firstValue,
+                                                      Length.LengthUnit firstUnit,
+                                                      double secondValue,
+                                                      Length.LengthUnit secondUnit) {
+        return new Length(firstValue, firstUnit).equals(new Length(secondValue, secondUnit));
+    }
+
     public static void demonstrateFeetEquality() {
         String firstValue = "1.0";
         String secondValue = "1.0";
@@ -103,6 +125,15 @@ public class QuantityMeasurementApp {
                 centimeterValue, feetValue, result);
     }
 
+    public static void demonstrateConversionExamples() {
+        demonstrateLengthConversion(1.0, Length.LengthUnit.FEET, Length.LengthUnit.INCHES);
+        demonstrateLengthConversion(3.0, Length.LengthUnit.YARDS, Length.LengthUnit.FEET);
+        demonstrateLengthConversion(36.0, Length.LengthUnit.INCHES, Length.LengthUnit.YARDS);
+        demonstrateLengthConversion(1.0, Length.LengthUnit.CENTIMETERS, Length.LengthUnit.INCHES);
+        demonstrateLengthConversion(new Length(2.0, Length.LengthUnit.YARDS), Length.LengthUnit.INCHES);
+        demonstrateLengthConversion(new Length(2.54, Length.LengthUnit.CENTIMETERS), Length.LengthUnit.INCHES);
+    }
+
     public static void main(String[] args) {
         demonstrateFeetEquality();
         demonstrateInchesEquality();
@@ -112,5 +143,6 @@ public class QuantityMeasurementApp {
         demonstrateYardToInchesComparison();
         demonstrateCentimeterToInchesComparison();
         demonstrateCentimeterToFeetComparison();
+        demonstrateConversionExamples();
     }
 }
