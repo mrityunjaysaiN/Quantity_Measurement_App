@@ -4,106 +4,68 @@ import java.util.Objects;
 
 public class QuantityMeasurementApp {
 
-    public static class Feet {
-        private final double value;
-
-        public Feet(double value) {
-            this.value = value;
+    public static Length parseLength(String input, Length.LengthUnit unit) {
+        if (input == null) {
+            throw new IllegalArgumentException("Input must not be null");
         }
-
-        public double getValue() {
-            return value;
+        if (unit == null) {
+            throw new IllegalArgumentException("Length unit must not be null");
         }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj == null || getClass() != obj.getClass()) {
-                return false;
-            }
-            Feet other = (Feet) obj;
-            return Double.compare(value, other.value) == 0;
-        }
-
-        @Override
-        public int hashCode() {
-            return Double.hashCode(value);
-        }
-    }
-
-    public static class Inches {
-        private final double value;
-
-        public Inches(double value) {
-            this.value = value;
-        }
-
-        public double getValue() {
-            return value;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj == null || getClass() != obj.getClass()) {
-                return false;
-            }
-            Inches other = (Inches) obj;
-            return Double.compare(value, other.value) == 0;
-        }
-
-        @Override
-        public int hashCode() {
-            return Double.hashCode(value);
-        }
-    }
-
-    public static Feet parseFeet(String input) {
-        Objects.requireNonNull(input, "Input must not be null");
         try {
-            return new Feet(Double.parseDouble(input.trim()));
+            return new Length(Double.parseDouble(input.trim()), unit);
         } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Input must be a numeric feet value.", ex);
+            throw new IllegalArgumentException("Input must be a numeric length value.", ex);
         }
     }
 
-    public static Inches parseInches(String input) {
-        Objects.requireNonNull(input, "Input must not be null");
+    public static Length parseLength(String input, String unitName) {
+        if (input == null) {
+            throw new IllegalArgumentException("Input must not be null");
+        }
+        if (unitName == null) {
+            throw new IllegalArgumentException("Unit name must not be null");
+        }
         try {
-            return new Inches(Double.parseDouble(input.trim()));
+            return new Length(Double.parseDouble(input.trim()), Length.LengthUnit.from(unitName));
         } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Input must be a numeric inches value.", ex);
+            throw new IllegalArgumentException("Input must be a numeric length value.", ex);
         }
     }
 
-    public static boolean compareFeet(String firstInput, String secondInput) {
-        return parseFeet(firstInput).equals(parseFeet(secondInput));
-    }
-
-    public static boolean compareInches(String firstInput, String secondInput) {
-        return parseInches(firstInput).equals(parseInches(secondInput));
+    public static boolean compareLengths(String firstValue,
+                                         Length.LengthUnit firstUnit,
+                                         String secondValue,
+                                         Length.LengthUnit secondUnit) {
+        return parseLength(firstValue, firstUnit).equals(parseLength(secondValue, secondUnit));
     }
 
     public static void demonstrateFeetEquality() {
         String firstValue = "1.0";
         String secondValue = "1.0";
-        boolean result = compareFeet(firstValue, secondValue);
-        System.out.printf("Input: %s ft and %s ft%nOutput: Equal (%b)%n", firstValue, secondValue, result);
+        boolean result = compareLengths(firstValue, Length.LengthUnit.FEET, secondValue, Length.LengthUnit.FEET);
+        System.out.printf("Input: Quantity(%s, \"feet\") and Quantity(%s, \"feet\")%nOutput: Equal (%b)%n",
+                firstValue, secondValue, result);
     }
 
     public static void demonstrateInchesEquality() {
         String firstValue = "1.0";
         String secondValue = "1.0";
-        boolean result = compareInches(firstValue, secondValue);
-        System.out.printf("Input: %s inch and %s inch%nOutput: Equal (%b)%n", firstValue, secondValue, result);
+        boolean result = compareLengths(firstValue, Length.LengthUnit.INCHES, secondValue, Length.LengthUnit.INCHES);
+        System.out.printf("Input: Quantity(%s, \"inch\") and Quantity(%s, \"inch\")%nOutput: Equal (%b)%n",
+                firstValue, secondValue, result);
+    }
+
+    public static void demonstrateFeetInchesComparison() {
+        String feetValue = "1.0";
+        String inchesValue = "12.0";
+        boolean result = compareLengths(feetValue, Length.LengthUnit.FEET, inchesValue, Length.LengthUnit.INCHES);
+        System.out.printf("Input: Quantity(%s, \"feet\") and Quantity(%s, \"inches\")%nOutput: Equal (%b)%n",
+                feetValue, inchesValue, result);
     }
 
     public static void main(String[] args) {
         demonstrateFeetEquality();
         demonstrateInchesEquality();
+        demonstrateFeetInchesComparison();
     }
 }
