@@ -55,17 +55,62 @@ public class QuantityMeasurementApp {
                 firstValue, secondValue, result);
     }
 
-    public static void demonstrateFeetInchesComparison() {
-        String feetValue = "1.0";
-        String inchesValue = "12.0";
-        boolean result = compareLengths(feetValue, Length.LengthUnit.FEET, inchesValue, Length.LengthUnit.INCHES);
-        System.out.printf("Input: Quantity(%s, \"feet\") and Quantity(%s, \"inches\")%nOutput: Equal (%b)%n",
-                feetValue, inchesValue, result);
+    public static void demonstrateYardsEquality() {
+        String firstValue = "2.0";
+        String secondValue = "2.0";
+        boolean result = compareLengths(firstValue, Length.LengthUnit.YARDS, secondValue, Length.LengthUnit.YARDS);
+        System.out.printf("Input: Quantity(%s, \"yards\") and Quantity(%s, \"yards\")%nOutput: Equal (%b)%n",
+                firstValue, secondValue, result);
+    }
+
+    public static void demonstrateCentimetersEquality() {
+        String firstValue = "2.0";
+        String secondValue = "2.0";
+        boolean result = compareLengths(firstValue, Length.LengthUnit.CENTIMETERS, secondValue, Length.LengthUnit.CENTIMETERS);
+        System.out.printf("Input: Quantity(%s, \"centimeters\") and Quantity(%s, \"centimeters\")%nOutput: Equal (%b)%n",
+                firstValue, secondValue, result);
+    }
+
+    public static void demonstrateYardToFeetComparison() {
+        String yardValue = "1.0";
+        String feetValue = "3.0";
+        boolean result = compareLengths(yardValue, Length.LengthUnit.YARDS, feetValue, Length.LengthUnit.FEET);
+        System.out.printf("Input: Quantity(%s, \"yards\") and Quantity(%s, \"feet\")%nOutput: Equal (%b)%n",
+                yardValue, feetValue, result);
+    }
+
+    public static void demonstrateYardToInchesComparison() {
+        String yardValue = "1.0";
+        String inchesValue = "36.0";
+        boolean result = compareLengths(yardValue, Length.LengthUnit.YARDS, inchesValue, Length.LengthUnit.INCHES);
+        System.out.printf("Input: Quantity(%s, \"yards\") and Quantity(%s, \"inches\")%nOutput: Equal (%b)%n",
+                yardValue, inchesValue, result);
+    }
+
+    public static void demonstrateCentimeterToInchesComparison() {
+        String centimeterValue = "1.0";
+        String inchesValue = "0.393701";
+        boolean result = compareLengths(centimeterValue, Length.LengthUnit.CENTIMETERS, inchesValue, Length.LengthUnit.INCHES);
+        System.out.printf("Input: Quantity(%s, \"centimeters\") and Quantity(%s, \"inches\")%nOutput: Equal (%b)%n",
+                centimeterValue, inchesValue, result);
+    }
+
+    public static void demonstrateCentimeterToFeetComparison() {
+        String centimeterValue = "1.0";
+        String feetValue = "0.032808";
+        boolean result = compareLengths(centimeterValue, Length.LengthUnit.CENTIMETERS, feetValue, Length.LengthUnit.FEET);
+        System.out.printf("Input: Quantity(%s, \"centimeters\") and Quantity(%s, \"feet\")%nOutput: Equal (%b)%n",
+                centimeterValue, feetValue, result);
     }
 
     public static void main(String[] args) {
         demonstrateFeetEquality();
         demonstrateInchesEquality();
-        demonstrateFeetInchesComparison();
+        demonstrateYardsEquality();
+        demonstrateCentimetersEquality();
+        demonstrateYardToFeetComparison();
+        demonstrateYardToInchesComparison();
+        demonstrateCentimeterToInchesComparison();
+        demonstrateCentimeterToFeetComparison();
     }
 }

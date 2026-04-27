@@ -3,8 +3,10 @@ package com.apps.quantitymeasurement;
 public class Length {
 
     public enum LengthUnit {
-        FEET(12.0, "feet", "foot"),
-        INCHES(1.0, "inches", "inch");
+        FEET(12.0, "feet", "foot", "ft"),
+        INCHES(1.0, "inches", "inch", "in"),
+        YARDS(36.0, "yards", "yard", "yd"),
+        CENTIMETERS(0.393701, "centimeters", "centimeter", "cm");
 
         private final double conversionFactor;
         private final String[] aliases;
@@ -33,6 +35,8 @@ public class Length {
         }
     }
 
+    private static final double EPSILON = 1e-6;
+
     private final double value;
     private final LengthUnit unit;
 
@@ -60,7 +64,7 @@ public class Length {
         if (thatLength == null) {
             throw new IllegalArgumentException("Compared length must not be null.");
         }
-        return Double.compare(convertToBaseUnit(), thatLength.convertToBaseUnit()) == 0;
+        return Math.abs(convertToBaseUnit() - thatLength.convertToBaseUnit()) < EPSILON;
     }
 
     @Override
@@ -77,6 +81,7 @@ public class Length {
 
     @Override
     public int hashCode() {
-        return Double.hashCode(convertToBaseUnit());
+        long rounded = Math.round(convertToBaseUnit() / EPSILON);
+        return Long.hashCode(rounded);
     }
 }
